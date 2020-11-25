@@ -1,2 +1,2 @@
 # kodealpha
-A simple but handy personal requests process server for me only.
+A simple but handy personal requests processing server for me only.

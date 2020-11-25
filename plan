@@ -1,0 +1,33 @@
+Simple web server running on AWS
+========
+
+Simple web server
+--------
+    - aiohttp webserver handling simple requests (done)
+    - Unit-tests
+    - Set up Git Hub (done)
+
+
+Container
+--------
+    - Docker compose (?)
+    - Run unit tests while building an image
+
+Host on AWS
+--------
+Set up AWS account  and IAM
+    - Also, document the process and tips (to repeat in the future)
+
+Fargate set up
+    - Purchase a domain (annual fee with less than 20$)
+    - CNAME set up
+    - LB, Security groups, target group, target set up
+
+Terraform
+    - Design the structure (how to manage dev or test environment separated from prod environment?)
+    - CNAME set up
+    - LB, Security groups, target group, target set up
+
+
+
+========
