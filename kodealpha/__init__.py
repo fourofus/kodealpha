@@ -10,13 +10,24 @@ class KodeAccessLogger(AbstractAccessLogger):
         self.logger.info(f'{request.remote} {request.method} {request.path}')
 
 
-class KodeService:
-    def __init__(self):
-        self.app = web.Application()
-        self.app.add_routes([
+class KodeAppFactory:
+    def create_app(self):
+        app = web.Application()
+        app.add_routes([
             web.get('/', self.handler),
             web.get('/api/{general}', self.handler)
         ])
+        return app
+
+    @staticmethod
+    async def handler(request):
+        general = request.match_info.get('general', 'unknown')
+        return web.Response(text=f'Received "{general}"')
+
+
+class KodeService:
+    def __init__(self, app: web.Application):
+        self.app = app
 
     async def start(self):
         """ Starts KODE service.
@@ -35,15 +46,11 @@ class KodeService:
                 print('Server cancelled')
                 break
 
-    @staticmethod
-    async def handler(request):
-        general = request.match_info.get('general', 'unknown')
-        return web.Response(text=f'Received "{general}"')
-
 
 async def server():
     try:
         print(f'Kode server ({__version__}) started')
-        await KodeService().start()
+        app = KodeAppFactory().create_app()
+        await KodeService(app).start()
     finally:
         print(f'Kode server ({__version__}) finished.')
