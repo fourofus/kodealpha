@@ -5,9 +5,13 @@ from aiohttp.abc import AbstractAccessLogger
 __version__ = '0.0.0a'
 
 
-class KodeAccessLogger(AbstractAccessLogger):
+class ApiLogger(AbstractAccessLogger):
+    """
+    Only logs requests including /api/.
+    """
     def log(self, request, response, time):
-        self.logger.info(f'{request.remote} {request.method} {request.path}')
+        if '/api/' in request.path:
+            self.logger.info(f'{request.remote} {request.method} {request.path}')
 
 
 class KodeAppFactory:
@@ -35,7 +39,7 @@ class KodeService:
             Application runners: https://docs.aiohttp.org/en/stable/web_advanced.html
         :return: None
         """
-        runner = web.AppRunner(self.app)
+        runner = web.AppRunner(self.app, access_log_class=ApiLogger)
         await runner.setup()
         site = web.TCPSite(runner, 'localhost', 8080)
         await site.start()

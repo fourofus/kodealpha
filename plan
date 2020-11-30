@@ -1,12 +1,18 @@
+Use JIRA: hyun.atlassian.net
+
+
 Simple web server running on AWS
 ========
 
 Simple web server
 --------
     - aiohttp webserver handling simple requests (done)
-    - Unit-tests
+    - Unit-tests (in progress)
     - Set up Git Hub (done)
 
+    - handle addresses with tail /
+    - implement greeting
+    - implement quote of the day
 
 Container
 --------
