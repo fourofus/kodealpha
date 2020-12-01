@@ -1,6 +1,8 @@
 import asyncio
+
 from aiohttp import web
 from aiohttp.abc import AbstractAccessLogger
+from aiohttp.web import normalize_path_middleware
 
 __version__ = '0.0.0a'
 
@@ -9,14 +11,18 @@ class ApiLogger(AbstractAccessLogger):
     """
     Only logs requests including /api/.
     """
+
     def log(self, request, response, time):
-        if '/api/' in request.path:
+        if request.path.startswith('/api'):
             self.logger.info(f'{request.remote} {request.method} {request.path}')
 
 
 class KodeAppFactory:
     def create_app(self):
-        app = web.Application()
+        app = web.Application(middlewares=[
+            normalize_path_middleware(append_slash=False, remove_slash=True, merge_slashes=True)]
+        )
+
         app.add_routes([
             web.get('/', self.handler),
             web.get('/api/{general}', self.handler)
